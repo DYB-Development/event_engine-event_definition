@@ -7,6 +7,7 @@ require "event_engine/subject_registry"
 require "event_engine/event_definition"
 require "event_engine/event_schema"
 require "event_engine/schema_registry"
+require "event_engine/lifecycle_definition"
 
 module EventEngine
   module Definition
