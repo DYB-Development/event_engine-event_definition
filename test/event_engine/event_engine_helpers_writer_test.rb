@@ -80,6 +80,12 @@ module EventEngine
       assert_includes source, "module MarketingEvents"
     end
 
+    test "the header is configurable" do
+      source = generate(schema_with(required_inputs: [:cow]), header: "# Generated. Do not edit.\n")
+
+      assert_includes source, "# Generated. Do not edit."
+    end
+
     test "passes the domain to emit" do
       source = generate(schema_with(required_inputs: [:cow]))
 
