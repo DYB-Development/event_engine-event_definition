@@ -29,3 +29,4 @@ module EventEngine
 end
 
 require "event_engine/definition/null_publisher"
+require "event_engine/definition/helpers_writer"
