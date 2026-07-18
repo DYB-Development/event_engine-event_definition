@@ -40,9 +40,9 @@ module EventEngine
       end
     end
 
-    def generate(event_schema)
+    def generate(event_schema, **options)
       Tempfile.create(["helpers", ".rb"]) do |file|
-        EventEngineHelpersWriter.write(file.path, event_schema)
+        EventEngineHelpersWriter.write(file.path, event_schema, **options)
         return File.read(file.path)
       end
     end
@@ -63,6 +63,15 @@ module EventEngine
       source = generate(schema_with(required_inputs: [:cow]))
 
       assert_includes source, "EventEngine.emit("
+    end
+
+    test "the emit target is configurable" do
+      source = generate(
+        schema_with(required_inputs: [:cow]),
+        emit: "EventEngine::Definition.publisher.publish"
+      )
+
+      assert_includes source, "EventEngine::Definition.publisher.publish("
     end
 
     test "passes the domain to emit" do
