@@ -29,5 +29,14 @@ module EventEngine
         assert_includes source, "def self.lead_created"
       end
     end
+
+    test "writes a schema.json holding the compiled event schemas" do
+      Dir.mktmpdir do |dir|
+        build_into(dir)
+
+        schema = JSON.parse(File.read(File.join(dir, "schema.json")))
+        assert_equal "lead_created", schema.first["event_name"]
+      end
+    end
   end
 end
