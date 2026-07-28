@@ -31,7 +31,7 @@ module EventEngine
       end
 
       def register_pack(pack)
-        packs << pack
+        packs << pack unless packs.include?(pack)
         pack
       end
 
