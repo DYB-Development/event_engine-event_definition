@@ -19,7 +19,7 @@ class EventRegistryDomainScopedLookupTest < DefinitionTestCase
     es.register(build_schema(domain: :marketing))
     es.finalize!
 
-    @registry = EventEngine::SchemaRegistry.new
+    @registry = EventEngine::Definition::SchemaRegistry.new
     @registry.reset!
     @registry.load_from_schema!(es)
   end
@@ -30,7 +30,7 @@ class EventRegistryDomainScopedLookupTest < DefinitionTestCase
   end
 
   test "scopes the lookup when the backing store is itself a registry" do
-    nested = EventEngine::SchemaRegistry.new
+    nested = EventEngine::Definition::SchemaRegistry.new
     nested.reset!
     nested.load_from_schema!(@registry)
 

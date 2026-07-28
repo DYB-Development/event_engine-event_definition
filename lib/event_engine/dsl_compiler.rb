@@ -16,7 +16,7 @@ module EventEngine
     ].freeze
 
     def self.compile(definitions, subject_registry: SubjectRegistry.new)
-      registry = SchemaRegistry.new
+      registry = Definition::SchemaRegistry.new
       subject_violations = []
       name_violations = []
       reserved_violations = []

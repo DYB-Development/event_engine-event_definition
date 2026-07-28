@@ -19,7 +19,7 @@ class EventRegistryLoadFromSchemaTest < DefinitionTestCase
     es.register(build_schema(event_name: :pig_fed, version: 1))
     es.finalize!
 
-    registry = EventEngine::SchemaRegistry.new
+    registry = EventEngine::Definition::SchemaRegistry.new
     registry.reset!
     registry.load_from_schema!(es)
 
