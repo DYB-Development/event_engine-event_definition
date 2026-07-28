@@ -90,6 +90,41 @@ The task loads every definition under `definitions_path` — **no Rails required
 
 This is a build-time step; your app never runs it while serving requests. If your events declare a `subject`, register them too: `config.subject_registry = EventEngine::SubjectRegistry.define { subject :lead }`.
 
+The generated helper looks like this — note that it registers itself:
+
+```ruby
+require "event_engine/definition"
+
+module MarketingEvents
+  def self.schema_path
+    File.expand_path("schema.json", __dir__)
+  end
+
+  def self.lead_created(lead:, event_version: nil, occurred_at: nil, ...)
+    EventEngine::Definition.publisher.publish(
+      :lead_created, domain: :marketing, inputs: { lead: lead }, ...
+    )
+  end
+
+  EventEngine::Definition.register_pack(self)
+end
+```
+
+### Pack self-registration
+
+Requiring a generated pack registers it, so consumers can discover every pack's
+schema without being told about each one:
+
+```ruby
+EventEngine::Definition.packs             # => [MarketingEvents, SalesEvents]
+EventEngine::Definition.pack_schema_paths # => ["/…/marketing/schema.json", "/…/sales/schema.json"]
+```
+
+This is what lets `event_engine`'s catalog task find your events with no
+per-pack configuration. `register_pack` is idempotent, so requiring a pack more
+than once is safe. `EventEngine::Definition.reset_packs!` clears the registry
+(useful in tests).
+
 ### Emit the event (at runtime)
 
 With the helper generated, producing the event anywhere in your app is one call. You hand it the whole `lead`; the contract decides what is captured off it:
