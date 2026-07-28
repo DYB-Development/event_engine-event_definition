@@ -26,5 +26,11 @@ module EventEngine
 
       assert_includes generated, "EventEngine::Definition.register_pack(self)"
     end
+
+    test "a pack helper requires the definition contract it registers with" do
+      generated = EventEngineHelpersWriter.generate(event_schema, schema_filename: "schema.json")
+
+      assert_includes generated, %(require "event_engine/definition")
+    end
   end
 end
