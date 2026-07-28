@@ -24,9 +24,17 @@ module EventEngine
     def self.generate(event_schema, root_module: "EventEngine", emit: "EventEngine.emit",
                       header: HEADER, group_by_domain: true, schema_filename: nil)
       body = group_by_domain ? grouped_body(event_schema, emit) : flat_body(event_schema, emit)
-      body = "#{schema_path_accessor(schema_filename)}#{body}" if schema_filename
+      body = "#{schema_path_accessor(schema_filename)}#{body}#{pack_registration}" if schema_filename
 
-      "#{header}module #{root_module}\n#{body}end\n"
+      "#{header}#{pack_require if schema_filename}module #{root_module}\n#{body}end\n"
+    end
+
+    def self.pack_require
+      %(require "event_engine/definition"\n\n)
+    end
+
+    def self.pack_registration
+      "\n  EventEngine::Definition.register_pack(self)\n"
     end
 
     def self.schema_path_accessor(filename)

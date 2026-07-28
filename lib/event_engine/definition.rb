@@ -26,6 +26,23 @@ module EventEngine
         @publisher = nil
       end
 
+      def packs
+        @packs ||= []
+      end
+
+      def register_pack(pack)
+        packs << pack unless packs.include?(pack)
+        pack
+      end
+
+      def pack_schema_paths
+        packs.map(&:schema_path)
+      end
+
+      def reset_packs!
+        @packs = nil
+      end
+
       def configuration
         @configuration ||= Configuration.new
       end
