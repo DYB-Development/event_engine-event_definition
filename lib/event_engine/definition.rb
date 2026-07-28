@@ -26,6 +26,19 @@ module EventEngine
         @publisher = nil
       end
 
+      def packs
+        @packs ||= []
+      end
+
+      def register_pack(pack)
+        packs << pack
+        pack
+      end
+
+      def reset_packs!
+        @packs = nil
+      end
+
       def configuration
         @configuration ||= Configuration.new
       end
