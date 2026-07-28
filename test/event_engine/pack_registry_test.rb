@@ -3,6 +3,7 @@
 require "test_helper"
 
 class EventEngine::PackRegistryTest < DefinitionTestCase
+  setup { EventEngine::Definition.reset_packs! }
   teardown { EventEngine::Definition.reset_packs! }
 
   test "register_pack adds the pack to packs" do
