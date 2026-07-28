@@ -35,6 +35,10 @@ module EventEngine
         pack
       end
 
+      def pack_schema_paths
+        packs.map(&:schema_path)
+      end
+
       def reset_packs!
         @packs = nil
       end
