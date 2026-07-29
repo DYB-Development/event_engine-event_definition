@@ -13,7 +13,7 @@ class EventSchemaImmutabilityTest < DefinitionTestCase
   end
 
   test "finalize! freezes schema and prevents further registration" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(event_name: :cow_fed, version: 1))
 
     es.finalize!
@@ -26,7 +26,7 @@ class EventSchemaImmutabilityTest < DefinitionTestCase
   end
 
   test "query methods still work after finalize" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     v1 = build_schema(event_name: :cow_fed, version: 1)
     es.register(v1)
 

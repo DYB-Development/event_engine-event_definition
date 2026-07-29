@@ -13,13 +13,13 @@ class EventRegistryVersionedLookupTest < DefinitionTestCase
   end
 
   setup do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(name: :cow_fed, version: 1))
     es.register(build_schema(name: :cow_fed, version: 2))
     es.register(build_schema(name: :pig_fed, version: 1))
     es.finalize!
 
-    @registry = EventEngine::SchemaRegistry.new
+    @registry = EventEngine::Definition::SchemaRegistry.new
     @registry.reset!
     @registry.load_from_schema!(es)
   end
@@ -35,7 +35,7 @@ class EventRegistryVersionedLookupTest < DefinitionTestCase
   end
 
   test "raises when requested version does not exist" do
-    assert_raises(EventEngine::SchemaRegistry::UnknownEventError) do
+    assert_raises(EventEngine::Definition::SchemaRegistry::UnknownEventError) do
       @registry.schema(:cow_fed, version: 99)
     end
   end

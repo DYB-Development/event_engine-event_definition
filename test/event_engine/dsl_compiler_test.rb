@@ -12,7 +12,7 @@ class DslCompilerTest < DefinitionTestCase
   test "compiles EventDefinition classes into a SchemaRegistry" do
     registry = EventEngine::DslCompiler.compile([CowFed])
 
-    assert_instance_of EventEngine::SchemaRegistry, registry
+    assert_instance_of EventEngine::Definition::SchemaRegistry, registry
     assert_equal [:cow_fed], registry.events
 
     schema = registry.latest_for(:cow_fed)
@@ -41,7 +41,7 @@ class DslCompilerTest < DefinitionTestCase
       domain :sales
     end
 
-    assert_raises(EventEngine::EventSchema::DuplicateEventNameError) do
+    assert_raises(EventEngine::Definition::EventSchema::DuplicateEventNameError) do
       EventEngine::DslCompiler.compile([one_deal, another_deal])
     end
   end

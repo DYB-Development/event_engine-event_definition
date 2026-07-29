@@ -11,7 +11,7 @@ class EventSchemaTest < DefinitionTestCase
       payload_fields: [{ name: :weight, from: :cow, attr: :weight }]
     )
 
-    event_schema = EventEngine::EventSchema.new
+    event_schema = EventEngine::Definition::EventSchema.new
     event_schema.register(schema)
 
     by_event = event_schema.schemas_by_event
@@ -40,7 +40,7 @@ class EventSchemaTest < DefinitionTestCase
       payload_fields: [{ name: :age, from: :cow, attr: :age }]
     )
 
-    event_schema = EventEngine::EventSchema.new
+    event_schema = EventEngine::Definition::EventSchema.new
     event_schema.register(v1)
     event_schema.register(v2)
 
@@ -69,7 +69,7 @@ class EventSchemaTest < DefinitionTestCase
       payload_fields: []
     )
 
-    event_schema = EventEngine::EventSchema.new
+    event_schema = EventEngine::Definition::EventSchema.new
     event_schema.register(sales)
 
     assert_nothing_raised { event_schema.register(marketing) }
@@ -96,10 +96,10 @@ class EventSchemaTest < DefinitionTestCase
       payload_fields: []
     )
 
-    event_schema = EventEngine::EventSchema.new
+    event_schema = EventEngine::Definition::EventSchema.new
     event_schema.register(a)
 
-    error = assert_raises(EventEngine::EventSchema::DuplicateEventNameError) do
+    error = assert_raises(EventEngine::Definition::EventSchema::DuplicateEventNameError) do
       event_schema.register(b)
     end
 

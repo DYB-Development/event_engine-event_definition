@@ -5,7 +5,7 @@ module EventEngine
   class EventEngineHelpersWriterTest < DefinitionTestCase
 
     def schema_with(required_inputs:, optional_inputs: [], domain: :sales)
-      EventSchema.new.tap do |event_schema|
+      Definition::EventSchema.new.tap do |event_schema|
         event_schema.register(
           EventDefinition::Schema.new(
             event_name: :cow_fed,
@@ -22,7 +22,7 @@ module EventEngine
     end
 
     def schema_across(domains)
-      EventSchema.new.tap do |event_schema|
+      Definition::EventSchema.new.tap do |event_schema|
         domains.each do |domain|
           event_schema.register(
             EventDefinition::Schema.new(

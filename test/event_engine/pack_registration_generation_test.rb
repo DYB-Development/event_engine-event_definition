@@ -5,7 +5,7 @@ require "test_helper"
 module EventEngine
   class PackRegistrationGenerationTest < DefinitionTestCase
     def event_schema
-      EventSchema.new.tap do |schema|
+      Definition::EventSchema.new.tap do |schema|
         schema.register(
           EventDefinition::Schema.new(
             event_name: :cow_fed,
