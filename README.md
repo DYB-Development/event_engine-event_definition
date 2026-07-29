@@ -90,6 +90,34 @@ The task loads every definition under `definitions_path` — **no Rails required
 
 This is a build-time step; your app never runs it while serving requests. If your events declare a `subject`, register them too: `config.subject_registry = EventEngine::SubjectRegistry.define { subject :lead }`.
 
+#### Generating inside a Rails app
+
+The path above is right for a **pack gem**, whose `lib/` a host never autoloads. If
+you generate into a **Rails app** instead, keep the helper out of the autoload paths.
+Rails 7.1+ autoloads `lib` by default, so Zeitwerk would expect
+`lib/generated/marketing_events.rb` to define `Generated::MarketingEvents` and raise
+on eager load — which means the app boots in development and fails in production:
+
+```
+Zeitwerk::NameError: expected file lib/generated/marketing_events.rb
+to define constant Generated::MarketingEvents
+```
+
+Add the directory to the ignore list:
+
+```ruby
+# config/application.rb
+config.autoload_lib(ignore: %w[assets tasks generated])
+```
+
+The helper is meant to be required explicitly, not autoloaded — it registers the pack
+on load, so it needs to be required once at boot:
+
+```ruby
+# config/initializers/event_engine.rb
+require Rails.root.join("lib/generated/marketing_events")
+```
+
 The generated helper looks like this — note that it registers itself:
 
 ```ruby
