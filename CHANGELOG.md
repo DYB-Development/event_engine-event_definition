@@ -5,6 +5,34 @@ All notable changes to this gem are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-07-29
+
+### Added
+
+- Pack self-registration. A generated pack calls
+  `EventEngine::Definition.register_pack(self)` when required, so consumers can
+  discover every pack's `schema.json` instead of being handed each path by
+  configuration. Exposed as `Definition.packs` and `Definition.pack_schema_paths`.
+- The generate task reports the files it wrote.
+
+### Changed
+
+- **Breaking.** `event_engine:definition:dump` is now `event_definition:generate`,
+  and `tasks/event_engine_definition.rake` is now `tasks/event_definition.rake`.
+  Packs must update the `load` line in their Rakefile. "dump" did not say what the
+  task produces, and the `event_engine:` prefix implied a dependency on the runtime
+  that this gem does not have.
+- **Breaking.** `EventEngine::SchemaRegistry` and `EventEngine::EventSchema` are now
+  `EventEngine::Definition::SchemaRegistry` and `EventEngine::Definition::EventSchema`.
+  Both previously sat at the top level and shadowed the `event_engine` runtime's own
+  classes of the same name on the same require path, so in any app installing both
+  gems the runtime silently operated on this gem's classes instead of its own.
+
+### Fixed
+
+- Generating a pack into a path whose directory did not exist raised
+  `Errno::ENOENT`. The directory is now created.
+
 ## [0.2.0] - 2026-07-20
 
 First published release of `event_engine-event_definition`, the plain-Ruby
