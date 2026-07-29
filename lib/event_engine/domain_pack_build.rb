@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require "fileutils"
 require "event_engine/dsl_compiler"
 require "event_engine/subject_registry"
 require "event_engine/event_engine_helpers_writer"
@@ -39,6 +40,7 @@ module EventEngine
 
     def run
       event_schema = compile
+      FileUtils.mkdir_p(File.dirname(@helper_path))
       write_helper(event_schema)
       write_schema_json(event_schema)
       self

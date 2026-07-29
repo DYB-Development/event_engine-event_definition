@@ -39,4 +39,34 @@ class DefinitionDumpTaskSmokeTest < DefinitionTestCase
       assert_path_exists helper_path
     end
   end
+
+  test "the generate task creates the helper's directory when it does not exist" do
+    Dir.mktmpdir do |dir|
+      definitions_path = File.join(dir, "event_definitions")
+      Dir.mkdir(definitions_path)
+      File.write(File.join(definitions_path, "dump_probe_created.rb"), <<~RUBY)
+        class DumpProbeCreated < EventEngine::EventDefinition
+          event_name :dump_probe_created
+          event_type :domain
+          domain :probe
+          input :thing
+          required_payload :thing_id, from: :thing, attr: :id
+        end
+      RUBY
+
+      helper_path = File.join(dir, "not_created_yet", "probe_events.rb")
+
+      EventEngine::Definition.configure do |config|
+        config.definitions_path = definitions_path
+        config.helper_path = helper_path
+        config.root_module = "ProbeEvents"
+      end
+
+      Rake.application = Rake::Application.new
+      load "tasks/event_definition.rake"
+      Rake::Task["event_definition:generate"].invoke
+
+      assert_path_exists helper_path
+    end
+  end
 end
