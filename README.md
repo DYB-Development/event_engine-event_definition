@@ -22,6 +22,13 @@ Then run `bundle install`, and require it:
 require "event_engine/definition"
 ```
 
+## A working example app
+
+[**DYB-Development/event_engine_example**](https://github.com/DYB-Development/event_engine_example)
+is a minimal Rails app that declares events with this gem, compiles them, and
+processes them through the `event_engine` runtime — useful for seeing the build step
+and the generated output in a real project.
+
 ## A worked example
 
 ### The data you want to capture
