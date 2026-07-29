@@ -14,7 +14,7 @@ class EventRegistryDomainScopedLookupTest < DefinitionTestCase
   end
 
   setup do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(domain: :sales))
     es.register(build_schema(domain: :marketing))
     es.finalize!

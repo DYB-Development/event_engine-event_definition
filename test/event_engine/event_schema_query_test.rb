@@ -14,7 +14,7 @@ class EventSchemaQueryTest < DefinitionTestCase
   end
 
   test "events returns unique event names" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(event_name: :cow_fed, version: 1))
     es.register(build_schema(event_name: :cow_fed, version: 2))
     es.register(build_schema(event_name: :pig_fed, version: 1))
@@ -23,7 +23,7 @@ class EventSchemaQueryTest < DefinitionTestCase
   end
 
   test "versions_for returns sorted versions for an event" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(event_name: :cow_fed, version: 2))
     es.register(build_schema(event_name: :cow_fed, version: 1))
 
@@ -31,7 +31,7 @@ class EventSchemaQueryTest < DefinitionTestCase
   end
 
   test "schema_for returns specific version" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     schema = build_schema(event_name: :cow_fed, version: 1)
     es.register(schema)
 
@@ -39,7 +39,7 @@ class EventSchemaQueryTest < DefinitionTestCase
   end
 
   test "latest_for returns highest version for an event" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     v1 = build_schema(event_name: :cow_fed, version: 1)
     v2 = build_schema(event_name: :cow_fed, version: 2)
     es.register(v1)
@@ -49,12 +49,12 @@ class EventSchemaQueryTest < DefinitionTestCase
   end
 
   test "latest_for returns nil when event is unknown" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     assert_nil es.latest_for(:missing)
   end
 
   test "schema_for resolves within the requested domain" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     sales = build_schema(event_name: :deal_won, version: 1, domain: :sales)
     marketing = build_schema(event_name: :deal_won, version: 1, domain: :marketing)
     es.register(sales)
@@ -64,7 +64,7 @@ class EventSchemaQueryTest < DefinitionTestCase
   end
 
   test "latest_for resolves the highest version within the requested domain" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     sales_v2 = build_schema(event_name: :deal_won, version: 2, domain: :sales)
     es.register(build_schema(event_name: :deal_won, version: 1, domain: :sales))
     es.register(sales_v2)
@@ -74,7 +74,7 @@ class EventSchemaQueryTest < DefinitionTestCase
   end
 
   test "versions_for resolves versions within the requested domain" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(event_name: :deal_won, version: 1, domain: :sales))
     es.register(build_schema(event_name: :deal_won, version: 2, domain: :sales))
     es.register(build_schema(event_name: :deal_won, version: 3, domain: :marketing))
@@ -83,7 +83,7 @@ class EventSchemaQueryTest < DefinitionTestCase
   end
 
   test "events resolves event names within the requested domain" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(event_name: :deal_won, version: 1, domain: :sales))
     es.register(build_schema(event_name: :lead_created, version: 1, domain: :marketing))
 

@@ -13,7 +13,7 @@ class EventRegistryLoadFromSchemaTest < DefinitionTestCase
   end
 
   test "loads latest schema per event from EventSchema" do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(event_name: :cow_fed, version: 1))
     es.register(build_schema(event_name: :cow_fed, version: 2))
     es.register(build_schema(event_name: :pig_fed, version: 1))

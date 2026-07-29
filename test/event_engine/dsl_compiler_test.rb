@@ -41,7 +41,7 @@ class DslCompilerTest < DefinitionTestCase
       domain :sales
     end
 
-    assert_raises(EventEngine::EventSchema::DuplicateEventNameError) do
+    assert_raises(EventEngine::Definition::EventSchema::DuplicateEventNameError) do
       EventEngine::DslCompiler.compile([one_deal, another_deal])
     end
   end

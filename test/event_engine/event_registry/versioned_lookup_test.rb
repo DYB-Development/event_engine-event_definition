@@ -13,7 +13,7 @@ class EventRegistryVersionedLookupTest < DefinitionTestCase
   end
 
   setup do
-    es = EventEngine::EventSchema.new
+    es = EventEngine::Definition::EventSchema.new
     es.register(build_schema(name: :cow_fed, version: 1))
     es.register(build_schema(name: :cow_fed, version: 2))
     es.register(build_schema(name: :pig_fed, version: 1))
