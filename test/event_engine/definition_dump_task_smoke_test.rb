@@ -33,8 +33,8 @@ class DefinitionDumpTaskSmokeTest < DefinitionTestCase
       end
 
       Rake.application = Rake::Application.new
-      load "tasks/event_engine_definition.rake"
-      Rake::Task["event_engine:definition:dump"].invoke
+      load "tasks/event_definition.rake"
+      Rake::Task["event_definition:generate"].invoke
 
       assert_path_exists helper_path
     end

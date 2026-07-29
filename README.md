@@ -70,7 +70,7 @@ The helper doesn't exist until you generate it. `event_engine-event_definition` 
 ```ruby
 # Rakefile (in your domain pack)
 require "event_engine/definition"
-load "tasks/event_engine_definition.rake"
+load "tasks/event_definition.rake"
 
 EventEngine::Definition.configure do |config|
   config.definitions_path = "app/event_definitions"             # where your EventDefinitions live
@@ -80,7 +80,7 @@ end
 ```
 
 ```sh
-$ rake event_engine:definition:dump
+$ rake event_definition:generate
 ```
 
 The task loads every definition under `definitions_path` — **no Rails required** — and writes two files you commit:
