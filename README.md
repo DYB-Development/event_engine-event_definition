@@ -145,10 +145,14 @@ Every `lead_created` event, from anywhere in the app, carries exactly the shape 
 }
 ```
 
-> **Where the work happens:** this gem *records* the `from:`/`attr:` mapping and forwards the raw `lead` under `inputs:`. Reading `lead.id`, `lead.email`, … to build that payload is done by the publisher the `event_engine` runtime supplies — see [How it fits](#how-it-fits-with-event_engine). Until one is configured the default publisher raises, so wire it once at boot:
+> **Where the work happens:** this gem *records* the `from:`/`attr:` mapping and forwards the raw `lead` under `inputs:`. Reading `lead.id`, `lead.email`, … to build that payload is done by the publisher the `event_engine` runtime supplies — see [How it fits](#how-it-fits-with-event_engine).
+>
+> **With `event_engine` installed you wire nothing** — it registers `EventEngine::DefinitionPublisher` at boot and the helper just works.
+>
+> Without it, the default publisher raises `PublisherNotConfigured`. Assign your own — any object with `#publish(event_name, domain:, inputs:, **envelope)`:
 >
 > ```ruby
-> EventEngine::Definition.publisher = my_publisher   # any object with #publish(event_name, **envelope)
+> EventEngine::Definition.publisher = MyPublisher.new
 > ```
 
 ### More examples
@@ -196,7 +200,7 @@ A payload field must also have a `from:` that references a declared input, and e
 
 ### Inspecting the compiled schema
 
-Every definition compiles to a `Schema` value object:
+Every definition compiles to an `EventEngine::EventDefinition::Schemas::Schema` value object:
 
 ```ruby
 schema = LeadCreated.schema
@@ -221,10 +225,18 @@ EventDefinition DSL                          registers as the publisher
         │ compile                            ────────────────────►
         ▼                                    reads the raw inputs via the
 generated helper  ──publish(event)──►        schema's from:/attr: mapping,
-+ committed schema.json                       then dispatches, persists, brokers…
++ committed schema.json                       then routes it to a processor
 ```
 
-A domain pack depends only on `event_engine-event_definition` to declare its events and build its helper file. In an app that also has `event_engine` installed, `event_engine` provides a real publisher adapter and assigns it to `EventEngine::Definition.publisher`, so calling a generated helper hands the event to the full runtime. Nothing in this gem knows how events are dispatched — that decision lives entirely in `event_engine`.
+A domain pack depends only on `event_engine-event_definition` to declare its events and build its helper file. In an app that also has `event_engine` installed, `event_engine` assigns `EventEngine::DefinitionPublisher` to `EventEngine::Definition.publisher` **at boot**, so calling a generated helper hands the event to the full runtime with no wiring in the host.
+
+Nothing in this gem knows how events are processed — that decision lives entirely in `event_engine`, declared in its rules file. A definition describes *what an event carries*, never *what happens to it*.
+
+### Namespacing
+
+Public API sits at `EventEngine::EventDefinition` (the DSL you subclass) and `EventEngine::Definition` (configuration, the publisher port, the pack registry).
+
+This gem's internals live under `EventEngine::Definition::*` — `Definition::SchemaRegistry`, `Definition::EventSchema` — deliberately, so they do not collide with `event_engine`'s own classes of the same name. Both gems are loaded into one `EventEngine` namespace in a host, and a shared require path means whichever gem wins `$LOAD_PATH` silently shadows the other.
 
 ## Development
 
