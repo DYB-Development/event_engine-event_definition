@@ -32,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Generating a pack into a path whose directory did not exist raised
   `Errno::ENOENT`. The directory is now created.
+- The README recommended generating into `lib/generated/`, which Rails 7.1+
+  autoloads. Zeitwerk expects that file to define `Generated::MarketingEvents`, so an
+  app following the README booted in development and raised on eager load in
+  production. Documented how to keep the helper out of the autoload paths.
 
 ## [0.2.0] - 2026-07-20
 
