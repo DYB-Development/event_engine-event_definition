@@ -1,0 +1,29 @@
+scope: declaring domain events with a plain-Ruby DSL and generating a pack's typed helper module and committed schema.json from them
+
+install:
+  - gem "event_engine-event_definition"
+  - require "event_engine/definition"
+  - load "tasks/event_definition.rake"
+  - EventEngine::Definition.configure
+  - rake event_definition:generate
+
+develop:
+  - EventEngine::EventDefinition
+  - EventEngine::LifecycleDefinition
+  - EventEngine::SubjectRegistry.define
+  - EventEngine::EventDefinition.schema
+  - EventEngine::Definition.publisher=
+  - EventEngine::Definition.packs
+  - EventEngine::Definition.pack_schema_paths
+
+sources:
+  - lib/event_engine/definition.rb
+  - lib/event_engine/definition/configuration.rb
+  - lib/tasks/event_definition.rake
+  - lib/event_engine/event_definition.rb
+  - lib/event_engine/event_definition/inputs.rb
+  - lib/event_engine/event_definition/payloads.rb
+  - lib/event_engine/event_definition/schemas.rb
+  - lib/event_engine/lifecycle_definition.rb
+  - lib/event_engine/subject_registry.rb
+  - event_engine-event_definition.gemspec
