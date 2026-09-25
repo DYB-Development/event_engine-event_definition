@@ -12,4 +12,5 @@ group :development, :test do
   gem "minitest", "~> 5.16"
   gem "minitest-reporters"
   gem "minitest-focus"
+  gem "the_local", "~> 0.4.1"
 end
