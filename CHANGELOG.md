@@ -5,6 +5,15 @@ All notable changes to this gem are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-09-25
+
+### Added
+
+- Claude Code locals for this gem, under `the_local/`. A project that uses
+  [the_local](https://github.com/DYB-Development/the_local) and depends on this gem
+  gets info, install and develop agents that document its public interface when it
+  runs `the_local install`.
+
 ## [0.3.0] - 2026-07-29
 
 ### Added
@@ -57,4 +66,6 @@ event-definition contract for the EventEngine pipeline.
 - `EventEngine::Definition.configure` for pack-generation settings.
 - `event_engine:definition:dump` rake task to generate a pack without Rails.
 
+[0.4.0]: https://github.com/DYB-Development/event_engine-event_definition/releases/tag/v0.4.0
+[0.3.0]: https://github.com/DYB-Development/event_engine-event_definition/releases/tag/v0.3.0
 [0.2.0]: https://github.com/DYB-Development/event_engine-event_definition/releases/tag/v0.2.0
