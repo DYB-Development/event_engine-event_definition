@@ -39,6 +39,15 @@ module EventEngine
       end
     end
 
+    test "writes a new event into schema.json at event_version 1" do
+      Dir.mktmpdir do |dir|
+        build_into(dir)
+
+        schema = JSON.parse(File.read(File.join(dir, "schema.json")))
+        assert_equal 1, schema.first["event_version"]
+      end
+    end
+
     test "the generated helper exposes a schema_path accessor" do
       Dir.mktmpdir do |dir|
         build_into(dir)

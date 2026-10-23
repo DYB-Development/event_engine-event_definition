@@ -12,6 +12,8 @@ module EventEngine
 
     SCHEMA_FILENAME = "schema.json"
 
+    FIRST_VERSION = 1
+
     HEADER = <<~RUBY.freeze
       # This file is authoritative in production.
       # It is generated from this pack's EventDefinitions.
@@ -61,7 +63,9 @@ module EventEngine
     end
 
     def schemas(event_schema)
-      event_schema.schemas_by_event.values.flat_map(&:values).map(&:to_h)
+      event_schema.schemas_by_event.values.flat_map(&:values).map do |schema|
+        schema.to_h.merge(event_version: schema.event_version || FIRST_VERSION)
+      end
     end
 
     def write_helper(event_schema)
