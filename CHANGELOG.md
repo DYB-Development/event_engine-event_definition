@@ -5,6 +5,15 @@ All notable changes to this gem are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `event_definition:generate` wrote every event into `schema.json` with
+  `"event_version": null`, since nothing assigned a version. An event with no
+  version is now written at version 1. Generation still does not raise the
+  version when an event's fingerprint changes.
+
 ## [0.4.0] - 2026-09-25
 
 ### Added
